@@ -8,19 +8,35 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $customers = User::where('role', 'customer')
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $query = User::where('role', 'customer');
 
-        return view('admin.customer-verification.index', compact('customers'));
+        // Search functionality
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'ILIKE', "%{$search}%")
+                  ->orWhere('email', 'ILIKE', "%{$search}%")
+                  ->orWhere('nohp', 'ILIKE', "%{$search}%")
+                  ->orWhere('nik', 'ILIKE', "%{$search}%");
+            });
+        }
+
+        // Filter by status
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status_verifikasi', $request->status);
+        }
+
+        $customers = $query->orderBy('created_at', 'desc')->paginate(20);
+
+        return view('admin.customer.index', compact('customers'));
     }
 
     public function show($id)
     {
         $customer = User::where('role', 'customer')->findOrFail($id);
-        return view('admin.customer-verification.show', compact('customer'));
+        return view('admin.customer.show', compact('customer'));
     }
 
     public function verify(Request $request, $id)
@@ -41,7 +57,7 @@ class CustomerController extends Controller
             ? 'Customer berhasil diverifikasi' 
             : 'Customer ditolak';
 
-        return redirect()->route('customer-verification.index')
+        return redirect()->route('customer.index')
             ->with('success', $message);
     }
 }

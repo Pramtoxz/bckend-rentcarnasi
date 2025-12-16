@@ -12,7 +12,7 @@
         <p>Sistem Rental Mobil</p>
         
         <div class="mt-3">
-            <a href="{{ route('customer-verification.index') }}" class="btn btn-primary">
+            <a href="{{ route('customer.index') }}" class="btn btn-primary">
                 Lihat Customer
             </a>
         </div>

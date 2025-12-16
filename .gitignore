@@ -17,6 +17,8 @@ SETUP_INSTRUCTIONS.md
 /node_modules
 /public/build
 /public/hot
+/public/assets/images/ktp/*
+/public/assets/images/selfie/*
 /public/storage
 /storage/*.key
 /storage/pail

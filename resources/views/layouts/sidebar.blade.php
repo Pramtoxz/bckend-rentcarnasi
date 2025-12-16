@@ -21,12 +21,22 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('customer-verification.index') }}">
+                    <a class="nav-link" href="{{ route('customer.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="ti ti-user-check fs-2"></i>
                         </span>
                         <span class="nav-link-title">
-                            Verifikasi Customer
+                            Data Customers
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('mobil.index') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="ti ti-car fs-2"></i>
+                        </span>
+                        <span class="nav-link-title">
+                            Data Mobil
                         </span>
                     </a>
                 </li>

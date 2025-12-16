@@ -9,7 +9,7 @@
         <div class="text-muted mt-1">Informasi lengkap customer</div>
     </div>
     <div class="col-auto">
-        <a href="{{ route('customer-verification.index') }}" class="btn btn-secondary">
+        <a href="{{ route('customer.index') }}" class="btn btn-secondary">
             <i class="ti ti-arrow-left me-2"></i>Kembali
         </a>
     </div>
@@ -83,7 +83,7 @@
                 @if($customer->status_verifikasi === 'pending')
                 <hr>
                 <h5 class="mb-3">Verifikasi Customer</h5>
-                <form action="{{ route('customer-verification.verify', $customer->id) }}" method="POST">
+                <form action="{{ route('customer.verify', $customer->id) }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Status Verifikasi</label>
