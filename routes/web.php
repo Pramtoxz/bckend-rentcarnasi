@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\web\PelangganController;
 use App\Http\Controllers\web\AuthController;
-use App\Http\Controllers\Web\CustomerController;
+use App\Http\Controllers\web\CustomerController;
 
 Route::middleware('guest')->group(function(){
     // Route::get('/register' ,[AuthController::class, 'FormRegister'])->name('register');
