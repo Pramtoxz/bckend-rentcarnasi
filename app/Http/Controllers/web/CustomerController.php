@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class CustomerVerificationController extends Controller
+class CustomerController extends Controller
 {
     public function index()
     {

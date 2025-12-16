@@ -95,7 +95,6 @@ class AuthController extends Controller
             ]);
         }
 
-        // User baru - buat temporary user untuk dapat token
         $tempUser = User::create([
             'nohp' => $request->nohp,
             'name' => 'Temporary',
@@ -139,17 +138,12 @@ class AuthController extends Controller
         }
 
         try {
-            // Upload foto KTP
             $fileKtp = $request->file('foto_ktp');
             $filenameKtp = time() . '_ktp_' . $fileKtp->getClientOriginalName();
             $fileKtp->move(public_path('assets/images/ktp'), $filenameKtp);
-
-            // Upload foto Selfie
             $fileSelfie = $request->file('foto_selfie');
             $filenameSelfie = time() . '_selfie_' . $fileSelfie->getClientOriginalName();
             $fileSelfie->move(public_path('assets/images/selfie'), $filenameSelfie);
-
-            // Update user yang sudah ada
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,

@@ -4,98 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Form Login</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet" />
+    <title>Login - Rental Mobil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     
    <script>
     tailwind.config = {
-        darkMode: "class",
         theme: {
             extend: {
                 colors: {
-                    primary: '#3b71ca',
-                    secondary: '#9fa6b2',
-                    info: '#54b4d3',
-                }
+                    primary: '#667eea',
+                },
             },
             fontFamily: {
-                body: ['Plus Jakarta Sans', 'sans-serif'],
                 sans: ['Plus Jakarta Sans', 'sans-serif'],
             },
         }
     }
 </script>
+<style>
+    .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    }
+    
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .input-field {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .input-field:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+    
+    .btn-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .btn-gradient:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-gradient:active {
+        transform: translateY(-1px);
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+    
+    .float-animation {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.5;
+        animation: blob 7s infinite;
+    }
+    
+    @keyframes blob {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+</style>
 </head>
-<body class="font-body">
-    <section class="h-screen">
-  <div class="container h-full px-6 py-24">
-    <div
-      class="flex h-full flex-wrap items-center justify-center lg:justify-between">
-      <div class="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
-        <img
-          src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-          class="w-full"
-          alt="Phone image" />
-      </div>
-
-      <div class="md:w-8/12 lg:ms-6 lg:w-5/12">
-        <form action="{{route('login.proses')}}" method="POST">
-            @csrf
-          <div class="relative mb-6" data-twe-input-wrapper-init>
-            <input
-              type="text"
-              name="email"
-              class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
-              id="exampleFormControlInput3"
-              placeholder="Email address" />
-            <label
-              for="exampleFormControlInput3"
-              class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
-              >Email address
-            </label>
-          </div>
-          <div class="relative mb-6" data-twe-input-wrapper-init>
-            <input
-              type="password"
-              name="password"
-              class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
-              id="exampleFormControlInput33"
-              placeholder="Password" />
-            <label
-              for="exampleFormControlInput33"
-              class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
-              >Password
-            </label>
-          </div>
-          <div class="mb-6 flex items-center justify-between">
-            <div class="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
-              <input
-                class="relative float-left -ms-[1.5rem] me-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-secondary-500 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-checkbox before:shadow-transparent before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ms-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-black/60 focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-black/60 focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-checkbox checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ms-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent rtl:float-right dark:border-neutral-400 dark:checked:border-primary dark:checked:bg-primary"
-                type="checkbox"
-                value=""
-                id="exampleCheck3"
-                checked />
-              <label
-                class="inline-block ps-[0.15rem] hover:cursor-pointer"
-                for="exampleCheck3">
-                Remember me
-              </label>
-            </div>
-          </div>
-          <button
-            type="submit"
-            class="inline-block w-full rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-            data-twe-ripple-init
-            data-twe-ripple-color="light">
-            Sign in
-          </button>
-        </form>
-      </div>
+<body class="font-sans overflow-hidden">
+    <!-- Background with Gradient and Blobs -->
+    <div class="gradient-bg fixed inset-0 z-0">
+        <div class="blob w-96 h-96 bg-purple-400 top-0 left-0"></div>
+        <div class="blob w-80 h-80 bg-pink-400 bottom-0 right-0" style="animation-delay: 2s;"></div>
+        <div class="blob w-72 h-72 bg-blue-400 top-1/2 left-1/2" style="animation-delay: 4s;"></div>
     </div>
-  </div>
-</section>
-<script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+
+    <!-- Main Content -->
+    <section class="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="container mx-auto">
+            <div class="flex flex-wrap items-center justify-center lg:justify-between gap-8">
+                
+                <!-- Left Side - Illustration -->
+                <div class="w-full lg:w-5/12 text-center lg:text-left">
+                    <div class="float-animation">
+                        <div class="inline-block p-8 glass-effect rounded-3xl shadow-2xl">
+                            <i class="ti ti-car text-9xl text-white"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-5xl font-bold text-white mt-8 mb-4">Rental Mobil</h1>
+                    <p class="text-xl text-white/90">Sistem Manajemen Rental Mobil Modern</p>
+                </div>
+
+                <!-- Right Side - Login Form -->
+                <div class="w-full lg:w-5/12">
+                    <div class="glass-effect rounded-3xl shadow-2xl p-8 md:p-12">
+                        <!-- Header -->
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl font-bold text-gray-800 mb-2">Selamat Datang</h2>
+                            <p class="text-gray-600">Silakan login untuk melanjutkan</p>
+                        </div>
+
+                        <!-- Form -->
+                        <form action="{{route('login.proses')}}" method="POST" class="space-y-6">
+                            @csrf
+                            
+                            <!-- Email Input -->
+                            <div>
+                                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="ti ti-mail mr-2"></i>Email Address
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    required
+                                    class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none bg-white/50"
+                                    placeholder="admin@gmail.com" />
+                            </div>
+
+                            <!-- Password Input -->
+                            <div>
+                                <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="ti ti-lock mr-2"></i>Password
+                                </label>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    required
+                                    class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none bg-white/50"
+                                    placeholder="••••••••" />
+                            </div>
+
+                            <!-- Remember Me -->
+                            <div class="flex items-center justify-between">
+                                <label class="flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        class="w-5 h-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                        checked />
+                                    <span class="ml-2 text-sm text-gray-700 font-medium">Remember me</span>
+                                </label>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button
+                                type="submit"
+                                class="btn-gradient w-full py-4 rounded-xl text-white font-bold text-lg shadow-lg">
+                                <i class="ti ti-login mr-2"></i>Sign In
+                            </button>
+                        </form>
+
+                        <!-- Footer -->
+                        <div class="mt-8 text-center">
+                            <p class="text-sm text-gray-600">
+                                © 2024 Rental Mobil. All rights reserved.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     @if(session('success'))

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\web\PelangganController;
 use App\Http\Controllers\web\AuthController;
-use App\Http\Controllers\Web\CustomerVerificationController;
+use App\Http\Controllers\Web\CustomerController;
 
 Route::middleware('guest')->group(function(){
     // Route::get('/register' ,[AuthController::class, 'FormRegister'])->name('register');
@@ -20,6 +20,6 @@ Route::middleware('auth')->group(function(){
     })->name('dashboard');
     
     Route::post('/logout', [AuthController::class , 'Logout'])->name('logout');
-    Route::resource('customer-verification', CustomerVerificationController::class)->only(['index', 'show']);
-    Route::post('/customer-verification/{id}/verify', [CustomerVerificationController::class, 'verify'])->name('customer-verification.verify');
+    Route::resource('customer-verification', CustomerController::class)->only(['index', 'show']);
+    Route::post('/customer-verification/{id}/verify', [CustomerController::class, 'verify'])->name('customer-verification.verify');
 });
