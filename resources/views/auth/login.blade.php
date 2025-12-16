@@ -79,6 +79,64 @@
         33% { transform: translate(30px, -50px) scale(1.1); }
         66% { transform: translate(-20px, 20px) scale(0.9); }
     }
+    
+    .car-3d {
+        position: relative;
+        transform-style: preserve-3d;
+        animation: car-float 4s ease-in-out infinite;
+        filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.5));
+    }
+    
+    @keyframes car-float {
+        0%, 100% { 
+            transform: translateY(0px) translateZ(50px) rotateY(-5deg);
+        }
+        50% { 
+            transform: translateY(-15px) translateZ(50px) rotateY(-5deg);
+        }
+    }
+    
+    .car-3d img {
+        transform: perspective(1000px) rotateY(-10deg) rotateX(2deg);
+        transition: transform 0.3s ease;
+    }
+    
+    .car-3d:hover img {
+        transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) scale(1.05);
+    }
+    
+    .car-glow {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        height: 40px;
+        background: radial-gradient(ellipse, rgba(102, 126, 234, 0.6), transparent);
+        filter: blur(20px);
+        animation: glow-pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes glow-pulse {
+        0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+        50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+    }
+    
+    .speed-lines {
+        position: absolute;
+        top: 50%;
+        left: -100px;
+        width: 200px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+        animation: speed-line 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes speed-line {
+        0% { transform: translateX(-200px); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: translateX(400px); opacity: 0; }
+    }
 </style>
 </head>
 <body class="font-sans overflow-hidden">
@@ -94,15 +152,45 @@
         <div class="container mx-auto">
             <div class="flex flex-wrap items-center justify-center lg:justify-between gap-8">
                 
-                <!-- Left Side - Illustration -->
-                <div class="w-full lg:w-5/12 text-center lg:text-left">
-                    <div class="float-animation">
-                        <div class="inline-block p-8 glass-effect rounded-3xl shadow-2xl">
-                            <i class="ti ti-car text-9xl text-white"></i>
+                <!-- Left Side - 3D Lamborghini -->
+                <div class="w-full lg:w-5/12 text-center lg:text-left relative">
+                    <!-- Speed Lines Effect -->
+                    <div class="speed-lines" style="top: 40%;"></div>
+                    <div class="speed-lines" style="top: 50%; animation-delay: 0.3s;"></div>
+                    <div class="speed-lines" style="top: 60%; animation-delay: 0.6s;"></div>
+                    
+                    <!-- 3D Car Container -->
+                    <div class="car-3d relative z-10">
+                        <img 
+                            src="{{ asset('assets/images/rent-car-nasi.png') }}" 
+                            alt="Lamborghini" 
+                            class="w-full h-auto"
+                            style="max-width: 900px;" />
+                        <!-- Glow Effect Under Car -->
+                        <div class="car-glow"></div>
+                    </div>
+                    
+                    <!-- Text Content -->
+                    <div class="mt-12 relative z-20">
+                        <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+                            Rental Mobil
+                        </h1>
+                        <p class="text-xl md:text-2xl text-white/90 drop-shadow-md">
+                            Sistem Manajemen Rental Mobil Modern
+                        </p>
+                        <div class="mt-6 flex items-center justify-center lg:justify-start gap-4">
+                            <div class="glass-effect px-6 py-3 rounded-full">
+                                <span class="text-white font-semibold">
+                                    <i class="ti ti-car mr-2"></i>Premium Cars
+                                </span>
+                            </div>
+                            <div class="glass-effect px-6 py-3 rounded-full">
+                                <span class="text-white font-semibold">
+                                    <i class="ti ti-shield-check mr-2"></i>Secure
+                                </span>
+                            </div>
                         </div>
                     </div>
-                    <h1 class="text-5xl font-bold text-white mt-8 mb-4">Rental Mobil</h1>
-                    <p class="text-xl text-white/90">Sistem Manajemen Rental Mobil Modern</p>
                 </div>
 
                 <!-- Right Side - Login Form -->
