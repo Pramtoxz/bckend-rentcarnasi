@@ -149,52 +149,11 @@
 
     <!-- Main Content -->
     <section class="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
-        <div class="container mx-auto">
-            <div class="flex flex-wrap items-center justify-center lg:justify-between gap-8">
+        <div class="container mx-auto max-w-7xl">
+            <div class="flex flex-wrap items-center justify-center lg:justify-between gap-12">
                 
-                <!-- Left Side - 3D Lamborghini -->
-                <div class="w-full lg:w-5/12 text-center lg:text-left relative">
-                    <!-- Speed Lines Effect -->
-                    <div class="speed-lines" style="top: 40%;"></div>
-                    <div class="speed-lines" style="top: 50%; animation-delay: 0.3s;"></div>
-                    <div class="speed-lines" style="top: 60%; animation-delay: 0.6s;"></div>
-                    
-                    <!-- 3D Car Container -->
-                    <div class="car-3d relative z-10">
-                        <img 
-                            src="{{ asset('assets/images/rent-car-nasi.png') }}" 
-                            alt="Lamborghini" 
-                            class="w-full h-auto"
-                            style="max-width: 900px;" />
-                        <!-- Glow Effect Under Car -->
-                        <div class="car-glow"></div>
-                    </div>
-                    
-                    <!-- Text Content -->
-                    <div class="mt-12 relative z-20">
-                        <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-                            Rental Mobil
-                        </h1>
-                        <p class="text-xl md:text-2xl text-white/90 drop-shadow-md">
-                            Sistem Manajemen Rental Mobil Modern
-                        </p>
-                        <div class="mt-6 flex items-center justify-center lg:justify-start gap-4">
-                            <div class="glass-effect px-6 py-3 rounded-full">
-                                <span class="text-white font-semibold">
-                                    <i class="ti ti-car mr-2"></i>Premium Cars
-                                </span>
-                            </div>
-                            <div class="glass-effect px-6 py-3 rounded-full">
-                                <span class="text-white font-semibold">
-                                    <i class="ti ti-shield-check mr-2"></i>Secure
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Side - Login Form -->
-                <div class="w-full lg:w-5/12">
+                <!-- Left Side - Login Form -->
+                <div class="w-full lg:w-5/12 order-2 lg:order-1">
                     <div class="glass-effect rounded-3xl shadow-2xl p-8 md:p-12">
                         <!-- Header -->
                         <div class="text-center mb-8">
@@ -256,9 +215,38 @@
                         <!-- Footer -->
                         <div class="mt-8 text-center">
                             <p class="text-sm text-gray-600">
-                                © 2024 Rental Mobil. All rights reserved.
+                                © 2025 Rent Car Nasi. All rights reserved.
                             </p>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - 3D Lamborghini -->
+                <div class="w-full lg:w-6/12 order-1 lg:order-2 relative">
+                    <!-- Speed Lines Effect -->
+                    <div class="speed-lines" style="top: 40%;"></div>
+                    <div class="speed-lines" style="top: 50%; animation-delay: 0.3s;"></div>
+                    <div class="speed-lines" style="top: 60%; animation-delay: 0.6s;"></div>
+                    
+                    <!-- 3D Car Container -->
+                    <div class="car-3d relative z-10">
+                        <img 
+                            src="{{ asset('assets/images/rent-car-nasi.png') }}" 
+                            alt="Lamborghini" 
+                            class="w-full h-auto"
+                            style="max-width: 1200px;" />
+                        <!-- Glow Effect Under Car -->
+                        <div class="car-glow"></div>
+                    </div>
+                    
+                    <!-- Text Content -->
+                    <div class="mt-8 text-center relative z-20">
+                        <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 drop-shadow-lg">
+                            Rent Car Nasi
+                        </h1>
+                        <p class="text-xl md:text-2xl text-white/90 drop-shadow-md">
+                            © Powered By | Sri Mulyarni | Attaya Botak
+                        </p>
                     </div>
                 </div>
             </div>
