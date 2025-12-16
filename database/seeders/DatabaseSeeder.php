@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\ConfigWA as WA;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,8 +20,18 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password'=> Hash::make('1234'),
+            'role' => 'admin',
+            'status_verifikasi' => 'verified',
+        ]);
+
+          WA::create([
+            'wa_gateway_url' => 'https://wa-gateway.myserverku.web.id',
+            'wa_gateway_secret' => 'OkYes!23*&!@%dsjPOETasdk',
+            'wa_session_name' => 'marketing',
+            'wa_group_id' => '120363421970612390@g.us',
         ]);
     }
 }

@@ -82,11 +82,6 @@
                 Remember me
               </label>
             </div>
-            <a
-              href="#!"
-              class="text-primary focus:outline-none dark:text-primary-400"
-              >Forgot password?</a
-            >
           </div>
           <button
             type="submit"
@@ -95,25 +90,6 @@
             data-twe-ripple-color="light">
             Sign in
           </button>
-          <div
-            class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300 dark:before:border-neutral-500 dark:after:border-neutral-500">
-            <p
-              class="mx-4 mb-0 text-center font-semibold dark:text-neutral-200">
-              OR
-            </p>
-          </div>
-          <a
-            class="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-            style="background-color: #3b5998"
-            href="/register"
-            role="button"
-            data-twe-ripple-init
-            data-twe-ripple-color="light">
-            <span
-              class="me-2 fill-white [&>svg]:mx-auto [&>svg]:h-3.5 [&>svg]:w-3.5">
-            </span>
-            Daftar Sekarang
-          </a>
         </form>
       </div>
     </div>
