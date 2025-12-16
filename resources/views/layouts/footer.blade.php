@@ -5,7 +5,7 @@
                 <ul class="list-inline list-inline-dots mb-0">
                     <li class="list-inline-item">
                         Copyright &copy; {{ date('Y') }}
-                        <a href="." class="link-secondary">Perusahaan Anda</a>.
+                        <a href="." class="link-secondary">Tugas Akhir Mobile 2|Kelompok Rental Mobil</a>.
                     </li>
                 </ul>
             </div>
