@@ -174,3 +174,24 @@ Authorization: Bearer {token}
   }
 }
 ```
+GET /api/mobil - Menampilkan semua mobil dengan filter:
+
+?merk=toyota - Filter berdasarkan merk
+?transmisi=manual atau ?transmisi=automatic - Filter berdasarkan transmisi
+?status=tersedia atau ?status=disewa atau ?status=maintenance - Filter berdasarkan status
+?search=avanza - Pencarian nama mobil, merk, atau plat nomor
+Bisa kombinasi: ?merk=toyota&transmisi=manual&status=tersedia
+GET /api/mobil/{id} - Detail mobil berdasarkan ID
+
+
+{
+  "success": true,
+  "message": "Data mobil berhasil diambil",
+  "data": [...],
+  "pagination": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 20,
+    "total": 1
+  }
+}

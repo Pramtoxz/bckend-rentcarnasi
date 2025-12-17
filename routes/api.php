@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\MobilController;
 
 
 Route::prefix('auth')->group(function () {
@@ -17,4 +18,8 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    
+    // Mobil endpoints
+    Route::get('/mobil', [MobilController::class, 'index']);
+    Route::get('/mobil/{id}', [MobilController::class, 'show']);
 });

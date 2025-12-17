@@ -51,18 +51,28 @@ class MobilController extends Controller
             'status' => 'required|in:tersedia,disewa,maintenance',
         ]);
 
-        $data = $request->except('foto_mobil');
+        try {
+            $data = $request->except('foto_mobil');
 
-        if ($request->hasFile('foto_mobil')) {
-            $file = $request->file('foto_mobil');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('assets/images/mobil'), $filename);
-            $data['foto_mobil'] = $filename;
+            if ($request->hasFile('foto_mobil')) {
+                $file = $request->file('foto_mobil');
+                $filename = time() . '_mobil_' . $file->getClientOriginalName();
+                
+                $uploadPath = public_path('assets/images/mobil');
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+                
+                $file->move($uploadPath, $filename);
+                $data['foto_mobil'] = $filename;
+            }
+
+            Mobil::create($data);
+
+            return redirect()->route('mobil.index')->with('success', 'Mobil berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
         }
-
-        Mobil::create($data);
-
-        return redirect()->route('mobil.index')->with('success', 'Mobil berhasil ditambahkan');
     }
 
     public function show(string $id)
@@ -95,34 +105,48 @@ class MobilController extends Controller
             'status' => 'required|in:tersedia,disewa,maintenance',
         ]);
 
-        $data = $request->except('foto_mobil');
+        try {
+            $data = $request->except('foto_mobil');
 
-        if ($request->hasFile('foto_mobil')) {
-            if ($mobil->foto_mobil && file_exists(public_path('assets/images/mobil/' . $mobil->foto_mobil))) {
-                unlink(public_path('assets/images/mobil/' . $mobil->foto_mobil));
+            if ($request->hasFile('foto_mobil')) {
+                $uploadPath = public_path('assets/images/mobil');
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+                if ($mobil->foto_mobil && file_exists($uploadPath . '/' . $mobil->foto_mobil)) {
+                    unlink($uploadPath . '/' . $mobil->foto_mobil);
+                }
+
+                $file = $request->file('foto_mobil');
+                $filename = time() . '_mobil_' . $file->getClientOriginalName();
+                $file->move($uploadPath, $filename);
+                $data['foto_mobil'] = $filename;
             }
 
-            $file = $request->file('foto_mobil');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('assets/images/mobil'), $filename);
-            $data['foto_mobil'] = $filename;
+            $mobil->update($data);
+
+            return redirect()->route('mobil.index')->with('success', 'Mobil berhasil diupdate');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data: ' . $e->getMessage());
         }
-
-        $mobil->update($data);
-
-        return redirect()->route('mobil.index')->with('success', 'Mobil berhasil diupdate');
     }
 
     public function destroy(string $id)
     {
-        $mobil = Mobil::findOrFail($id);
+        try {
+            $mobil = Mobil::findOrFail($id);
 
-        if ($mobil->foto_mobil && file_exists(public_path('assets/images/mobil/' . $mobil->foto_mobil))) {
-            unlink(public_path('assets/images/mobil/' . $mobil->foto_mobil));
+            $uploadPath = public_path('assets/images/mobil');
+            if ($mobil->foto_mobil && file_exists($uploadPath . '/' . $mobil->foto_mobil)) {
+                unlink($uploadPath . '/' . $mobil->foto_mobil);
+            }
+
+            $mobil->delete();
+
+            return redirect()->route('mobil.index')->with('success', 'Mobil berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data: ' . $e->getMessage());
         }
-
-        $mobil->delete();
-
-        return redirect()->route('mobil.index')->with('success', 'Mobil berhasil dihapus');
     }
 }
