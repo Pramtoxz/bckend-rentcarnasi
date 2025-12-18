@@ -37,7 +37,7 @@ class MobilController extends Controller
             });
         }
 
-        $mobils = $query->orderBy('created_at', 'desc')->paginate(20);
+        $mobils = $query->orderBy('created_at', 'desc')->get();
 
         $data = $mobils->map(function ($mobil) {
             return $this->formatMobilData($mobil);
@@ -47,12 +47,6 @@ class MobilController extends Controller
             'success' => true,
             'message' => 'Data mobil berhasil diambil',
             'data' => $data,
-            'pagination' => [
-                'current_page' => $mobils->currentPage(),
-                'last_page' => $mobils->lastPage(),
-                'per_page' => $mobils->perPage(),
-                'total' => $mobils->total(),
-            ],
         ]);
     }
 

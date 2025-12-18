@@ -1,6 +1,6 @@
 # API Documentation - Rental Mobil
 
-Base URL: `http://localhost:8000/api`
+Base URL: `https://rentcarnasi.ngalauminangmaimbau.web.id/api`
 
 ## Authentication Flow
 
@@ -92,7 +92,7 @@ foto_selfie: [file]
       "email": "john@example.com",
       "nohp": "628123456789",
       "nik": "1234567890123456",
-      "status_verifikasi": "pending",
+      "status_verifikasi": "pending" atau "rejected" atau "verified",
       "role": "customer"
     }
   }
@@ -214,13 +214,7 @@ Authorization: Bearer {token}
       "created_at": "2025-12-17T14:07:17.000000Z",
       "updated_at": "2025-12-17T14:07:17.000000Z"
     }
-  ],
-  "pagination": {
-    "current_page": 1,
-    "last_page": 1,
-    "per_page": 20,
-    "total": 1
-  }
+  ]
 }
 ```
 
