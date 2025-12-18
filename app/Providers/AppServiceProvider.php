@@ -20,8 +20,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-         if ($this->app->environment('production')) {
+        // Force HTTPS in production
+        if ($this->app->environment('production')) {
             URL::forceScheme('https');
+        }
+
+        // Trust Cloudflare proxies
+        if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+            $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+            $_SERVER['HTTPS'] = 'on';
         }
     }
 }
