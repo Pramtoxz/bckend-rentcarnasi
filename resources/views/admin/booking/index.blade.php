@@ -83,7 +83,7 @@
                         @forelse($bookings as $index => $booking)
                         <tr>
                             <td>{{ $bookings->firstItem() + $index }}</td>
-                            <td><span class="badge bg-dark">{{ $booking->kode_booking }}</span></td>
+                            <td><span class="badge bg-dark text-white">{{ $booking->kode_booking }}</span></td>
                             <td>
                                 <div class="d-flex py-1 align-items-center">
                                     <span class="avatar me-2" style="background-image: url(https://ui-avatars.com/api/?name={{ urlencode($booking->user->name) }})"></span>
@@ -107,22 +107,22 @@
                                 @if($booking->status_pembayaran === 'pending')
                                     <span class="badge bg-warning text-white">Pending</span>
                                 @elseif($booking->status_pembayaran === 'verified')
-                                    <span class="badge bg-success">Verified</span>
+                                    <span class="badge bg-success text-white">Verified</span>
                                 @else
-                                    <span class="badge bg-danger">Rejected</span>
+                                    <span class="badge bg-danger text-white">Rejected</span>
                                 @endif
                             </td>
                             <td>
                                 @if($booking->status_booking === 'pending')
-                                    <span class="badge bg-secondary">Pending</span>
+                                    <span class="badge bg-secondary text-white">Pending</span>
                                 @elseif($booking->status_booking === 'confirmed')
-                                    <span class="badge bg-info">Confirmed</span>
+                                    <span class="badge bg-info text-white">Confirmed</span>
                                 @elseif($booking->status_booking === 'checked_in')
-                                    <span class="badge bg-primary">Checked In</span>
+                                    <span class="badge bg-primary text-white">Checked In</span>
                                 @elseif($booking->status_booking === 'completed')
-                                    <span class="badge bg-success">Completed</span>
+                                    <span class="badge bg-success text-white">Completed</span>
                                 @else
-                                    <span class="badge bg-danger">Cancelled</span>
+                                    <span class="badge bg-danger text-white">Cancelled</span>
                                 @endif
                             </td>
                             <td>

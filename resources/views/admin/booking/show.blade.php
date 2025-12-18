@@ -64,9 +64,9 @@
                             @if($booking->status_pembayaran === 'pending')
                                 <span class="badge bg-warning text-white">Pending</span>
                             @elseif($booking->status_pembayaran === 'verified')
-                                <span class="badge bg-success">Verified</span>
+                                <span class="badge bg-success text-white">Verified</span>
                             @else
-                                <span class="badge bg-danger">Rejected</span>
+                                <span class="badge bg-danger text-white">Rejected</span>
                             @endif
                         </div>
                     </div>
@@ -74,15 +74,15 @@
                         <label class="form-label">Status Booking</label>
                         <div>
                             @if($booking->status_booking === 'pending')
-                                <span class="badge bg-secondary">Pending</span>
+                                <span class="badge bg-secondary text-white">Pending</span>
                             @elseif($booking->status_booking === 'confirmed')
-                                <span class="badge bg-info">Confirmed</span>
+                                <span class="badge bg-info text-white">Confirmed</span>
                             @elseif($booking->status_booking === 'checked_in')
-                                <span class="badge bg-primary">Checked In</span>
+                                <span class="badge bg-primary text-white">Checked In</span>
                             @elseif($booking->status_booking === 'completed')
-                                <span class="badge bg-success">Completed</span>
+                                <span class="badge bg-success text-white">Completed</span>
                             @else
-                                <span class="badge bg-danger">Cancelled</span>
+                                <span class="badge bg-danger text-white">Cancelled</span>
                             @endif
                         </div>
                     </div>
