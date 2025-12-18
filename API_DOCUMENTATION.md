@@ -122,7 +122,52 @@ Authorization: Bearer {token}
 }
 ```
 
-### 5. Logout
+### 5. Update Profile
+**Endpoint:** `POST /profile/update`
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
+
+**Request Body (multipart/form-data):**
+```
+name: John Doe (optional)
+email: john@example.com (optional)
+nik: 1234567890123456 (optional)
+alamat: Jl. Example No. 123 (optional)
+foto_ktp: [file] (optional)
+foto_selfie: [file] (optional)
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Profile berhasil diupdate",
+  "data": {
+    "user": {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "nohp": "628123456789",
+      "nik": "1234567890123456",
+      "alamat": "Jl. Example No. 123",
+      "foto_ktp": "1734567890_ktp_example.jpg",
+      "foto_selfie": "1734567890_selfie_example.jpg",
+      "status_verifikasi": "verified",
+      "role": "customer"
+    }
+  }
+}
+```
+
+**Notes:**
+- Semua field bersifat optional, hanya kirim field yang ingin diupdate
+- Jika upload foto baru, foto lama akan otomatis dihapus
+- Email dan NIK harus unique (tidak boleh sama dengan user lain)
+
+### 6. Logout
 **Endpoint:** `POST /logout`
 
 **Headers:**

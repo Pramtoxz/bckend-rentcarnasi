@@ -168,6 +168,85 @@ class AuthController extends Controller
         }
     }
 
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . $user->id,
+            'nik' => 'sometimes|string|size:16|unique:users,nik,' . $user->id,
+            'alamat' => 'sometimes|string',
+            'foto_ktp' => 'sometimes|image|mimes:jpeg,jpg,png|max:2048',
+            'foto_selfie' => 'sometimes|image|mimes:jpeg,jpg,png|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $updateData = [];
+
+            if ($request->has('name')) {
+                $updateData['name'] = $request->name;
+            }
+
+            if ($request->has('email')) {
+                $updateData['email'] = $request->email;
+            }
+
+            if ($request->has('nik')) {
+                $updateData['nik'] = $request->nik;
+            }
+
+            if ($request->has('alamat')) {
+                $updateData['alamat'] = $request->alamat;
+            }
+
+            if ($request->hasFile('foto_ktp')) {
+                if ($user->foto_ktp && file_exists(public_path('assets/images/ktp/' . $user->foto_ktp))) {
+                    unlink(public_path('assets/images/ktp/' . $user->foto_ktp));
+                }
+
+                $fileKtp = $request->file('foto_ktp');
+                $filenameKtp = time() . '_ktp_' . $fileKtp->getClientOriginalName();
+                $fileKtp->move(public_path('assets/images/ktp'), $filenameKtp);
+                $updateData['foto_ktp'] = $filenameKtp;
+            }
+
+            if ($request->hasFile('foto_selfie')) {
+                if ($user->foto_selfie && file_exists(public_path('assets/images/selfie/' . $user->foto_selfie))) {
+                    unlink(public_path('assets/images/selfie/' . $user->foto_selfie));
+                }
+
+                $fileSelfie = $request->file('foto_selfie');
+                $filenameSelfie = time() . '_selfie_' . $fileSelfie->getClientOriginalName();
+                $fileSelfie->move(public_path('assets/images/selfie'), $filenameSelfie);
+                $updateData['foto_selfie'] = $filenameSelfie;
+            }
+
+            $user->update($updateData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile berhasil diupdate',
+                'data' => [
+                    'user' => $user->fresh()
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengupdate profile: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function profile(Request $request)
     {
         return response()->json([
