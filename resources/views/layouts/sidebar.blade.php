@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('boking.index') }}">
+                    <a class="nav-link" href="{{ route('booking.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                          <i class="ti ti-brand-booking"></i>
                         </span>
