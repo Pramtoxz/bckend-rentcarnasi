@@ -14,9 +14,9 @@ class WhatsAppGateway
     public function __construct(?int $configId = null)
     {
         if ($configId) {
-            $config = DB::table('public.config_wa')->where('id', $configId)->first();
+            $config = DB::table('config_wa')->where('id', $configId)->first();
         } else {
-            $config = DB::table('public.config_wa')->first();
+            $config = DB::table('config_wa')->first();
         }
         
         if (!$config) {
