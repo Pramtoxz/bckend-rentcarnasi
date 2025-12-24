@@ -13,9 +13,9 @@ class FCMService
     public function __construct()
     {
         $this->client = new Client();
-        $this->client->setAuthConfig(base_path(env('FCM_CREDENTIALS_PATH')));
-        $this->client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-    }
+       $this->client->setAuthConfig(base_path('fcm.json'));    
+    $this->client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+}
 
     public function sendNotification($token, $title, $body, $data = [])
     {
