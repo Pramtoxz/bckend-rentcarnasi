@@ -84,7 +84,7 @@
                             </td>
                             <td>{{ $mobil->nama_mobil }}</td>
                             <td>{{ $mobil->merk }}</td>
-                            <td><span class="badge bg-dark">{{ $mobil->plat_nomor }}</span></td>
+                            <td><span class="badge bg-dark text-white">{{ $mobil->plat_nomor }}</span></td>
                             <td>{{ ucfirst($mobil->jenis_transmisi) }}</td>
                             <td>Rp {{ number_format($mobil->harga_sewa_per_hari, 0, ',', '.') }}</td>
                             <td>
