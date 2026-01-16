@@ -163,7 +163,7 @@ class FCMService
 
         return $this->sendNotification($user->fcm_token, $title, $message, $data);
     }
-}
+
 
     public function sendBroadcastNotification($user, $title, $message, $broadcastData = [])
     {
@@ -184,3 +184,4 @@ class FCMService
 
         return $this->sendNotification($user->fcm_token, $title, $message, $data);
     }
+}
