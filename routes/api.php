@@ -12,8 +12,6 @@ use App\Http\Controllers\NotificationController;
 
 Route::post('/fcm/send', [NotificationController::class, 'sendTest']);
 
-Route::get('/booking/{id}/faktur', [BookingController::class, 'faktur']);
-
 Route::prefix('auth')->group(function () {
     Route::post('/request-otp', [AuthController::class, 'requestOTP']);
     Route::post('/verify-otp', [AuthController::class, 'verifyOTP']);
@@ -37,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/booking/{id}/upload-bukti', [BookingController::class, 'uploadBuktiPembayaran']);
     Route::get('/booking', [BookingController::class, 'myBookings']);
     Route::get('/booking/{id}', [BookingController::class, 'show']);
+    Route::get('/booking/{id}/faktur', [BookingController::class, 'faktur']);
 
     Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/customers/pending', [AdminController::class, 'pendingCustomers']);

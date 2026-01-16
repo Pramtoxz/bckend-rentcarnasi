@@ -19,82 +19,45 @@ class BookingController extends Controller
     {
         Log::info('Faktur request', [
             'booking_id' => $id,
-            'has_token' => $request->has('token'),
             'has_auth_header' => $request->hasHeader('Authorization')
         ]);
 
-        // Coba autentikasi dari token query parameter
-        if ($request->has('token')) {
-            $accessToken = \Laravel\Sanctum\PersonalAccessToken::findToken($request->token);
-            if ($accessToken) {
-                $user = $accessToken->tokenable;
-                Log::info('User authenticated via token parameter', ['user_id' => $user->id]);
-                
-                $booking = Booking::where('id', $id)
-                    ->where('user_id', $user->id)
-                    ->with(['mobil', 'user'])
-                    ->first();
-
-                if (!$booking) {
-                    Log::warning('Booking not found or access denied', ['booking_id' => $id, 'user_id' => $user->id]);
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Booking tidak ditemukan atau Anda tidak memiliki akses',
-                    ], 404);
-                }
-
-                try {
-                    $pdf = Pdf::loadView('faktur', compact('booking'));
-                    Log::info('Faktur generated successfully', ['booking_id' => $id]);
-                    return $pdf->download('Faktur-' . $booking->kode_booking . '.pdf');
-                } catch (\Exception $e) {
-                    Log::error('Faktur generation failed', ['error' => $e->getMessage()]);
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Gagal membuat faktur: ' . $e->getMessage(),
-                    ], 500);
-                }
-            } else {
-                Log::warning('Invalid token provided');
-            }
+        // Autentikasi dari header Authorization
+        if (!$request->user()) {
+            Log::error('Unauthorized faktur access attempt', ['booking_id' => $id]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Silakan login terlebih dahulu.'
+            ], 401);
         }
 
-        // Coba autentikasi dari header Authorization (untuk request dari mobile app)
-        if ($request->user()) {
-            $user = $request->user();
-            Log::info('User authenticated via header', ['user_id' => $user->id]);
-            
-            $booking = Booking::where('id', $id)
-                ->where('user_id', $user->id)
-                ->with(['mobil', 'user'])
-                ->first();
+        $user = $request->user();
+        Log::info('User authenticated', ['user_id' => $user->id]);
+        
+        $booking = Booking::where('id', $id)
+            ->where('user_id', $user->id)
+            ->with(['mobil', 'user'])
+            ->first();
 
-            if (!$booking) {
-                Log::warning('Booking not found or access denied', ['booking_id' => $id, 'user_id' => $user->id]);
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Booking tidak ditemukan atau Anda tidak memiliki akses',
-                ], 404);
-            }
-
-            try {
-                $pdf = Pdf::loadView('faktur', compact('booking'));
-                Log::info('Faktur generated successfully', ['booking_id' => $id]);
-                return $pdf->download('Faktur-' . $booking->kode_booking . '.pdf');
-            } catch (\Exception $e) {
-                Log::error('Faktur generation failed', ['error' => $e->getMessage()]);
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Gagal membuat faktur: ' . $e->getMessage(),
-                ], 500);
-            }
+        if (!$booking) {
+            Log::warning('Booking not found or access denied', ['booking_id' => $id, 'user_id' => $user->id]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking tidak ditemukan atau Anda tidak memiliki akses',
+            ], 404);
         }
 
-        Log::error('Unauthorized faktur access attempt', ['booking_id' => $id]);
-        return response()->json([
-            'success' => false,
-            'message' => 'Unauthorized. Silakan sertakan token di URL: /api/booking/{id}/faktur?token=YOUR_TOKEN'
-        ], 401);
+        try {
+            $pdf = Pdf::loadView('faktur', compact('booking'));
+            Log::info('Faktur generated successfully', ['booking_id' => $id]);
+            return $pdf->download('Faktur-' . $booking->kode_booking . '.pdf');
+        } catch (\Exception $e) {
+            Log::error('Faktur generation failed', ['error' => $e->getMessage()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal membuat faktur: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function store(Request $request)
@@ -301,7 +264,7 @@ class BookingController extends Controller
     {
         $booking->load(['mobil', 'user']);
 
-        $data = [
+        return [
             'id' => $booking->id,
             'kode_booking' => $booking->kode_booking,
             'mobil' => [
@@ -324,15 +287,5 @@ class BookingController extends Controller
             'catatan_admin' => $booking->catatan_admin,
             'created_at' => $booking->created_at,
         ];
-
-        // Tambahkan URL faktur dengan token jika user tersedia
-        if ($user) {
-            $token = $user->currentAccessToken()->token ?? $user->tokens()->first()->token ?? null;
-            if ($token) {
-                $data['faktur_url'] = url("/api/booking/{$booking->id}/faktur?token={$token}");
-            }
-        }
-
-        return $data;
     }
 }
