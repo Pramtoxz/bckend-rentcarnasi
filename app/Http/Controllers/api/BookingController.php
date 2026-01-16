@@ -8,9 +8,53 @@ use App\Models\Mobil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
+    public function faktur(Request $request, $id)
+    {
+        if ($request->has('token')) {
+            $accessToken = \Laravel\Sanctum\PersonalAccessToken::findToken($request->token);
+            if ($accessToken) {
+                $request->setUserResolver(function () use ($accessToken) {
+                    return $accessToken->tokenable;
+                });
+            }
+        }
+
+        if (!$request->user()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        Log::info('Faktur request for ID: ' . $id);
+
+        $booking = Booking::where('id', $id)
+            ->where('user_id', $request->user()->id)
+            ->with(['mobil', 'user'])
+            ->first();
+
+        if (!$booking) {
+            Log::warning('Booking not found or access denied for ID: ' . $id);
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking tidak ditemukan atau Anda tidak memiliki akses',
+            ], 404);
+        }
+
+        try {
+            $pdf = Pdf::loadView('faktur', compact('booking'));
+            return $pdf->download('Faktur-' . $booking->kode_booking . '.pdf');
+        } catch (\Exception $e) {
+            Log::error('Faktur generation failed: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal membuat faktur: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
