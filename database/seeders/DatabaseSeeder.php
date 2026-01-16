@@ -22,15 +22,15 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'password'=> Hash::make('1234'),
+            'password' => Hash::make('1234'),
             'role' => 'admin',
             'status_verifikasi' => 'verified',
         ]);
 
-          WA::create([
+        WA::create([
             'wa_gateway_url' => 'https://wa-gateway.myserverku.web.id',
             'wa_gateway_secret' => 'OkYes!23*&!@%dsjPOETasdk',
-            'wa_session_name' => 'marketing',
+            'wa_session_name' => 'attaya',
             'wa_group_id' => '120363421970612390@g.us',
         ]);
     }

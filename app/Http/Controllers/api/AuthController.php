@@ -33,7 +33,7 @@ class AuthController extends Controller
         }
 
         $nohp = $request->nohp;
-        
+
         $existingUser = User::where('nohp', $nohp)->first();
         $type = $existingUser ? 'login' : 'register';
 
@@ -120,13 +120,25 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'nik' => 'required|string|size:16|unique:users,nik',
+            'nik' => 'required|string|size:16|unique:users,nik,' . $user->id,
             'alamat' => 'required|string',
             'foto_ktp' => 'required|image|mimes:jpeg,jpg,png|max:2048',
             'foto_selfie' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+        ], [
+            'nik.size' => 'NIK harus berjumlah 16 karakter',
+            'nik.unique' => 'NIK sudah terdaftar',
+            'foto_ktp.required' => 'Foto KTP wajib diunggah',
+            'foto_selfie.required' => 'Foto Selfie wajib diunggah',
         ]);
 
         if ($validator->fails()) {
@@ -138,12 +150,17 @@ class AuthController extends Controller
         }
 
         try {
+            // Proses upload Foto KTP
             $fileKtp = $request->file('foto_ktp');
             $filenameKtp = time() . '_ktp_' . $fileKtp->getClientOriginalName();
             $fileKtp->move(public_path('assets/images/ktp'), $filenameKtp);
+
+            // Proses upload Foto Selfie
             $fileSelfie = $request->file('foto_selfie');
             $filenameSelfie = time() . '_selfie_' . $fileSelfie->getClientOriginalName();
             $fileSelfie->move(public_path('assets/images/selfie'), $filenameSelfie);
+
+            // Update data user
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -151,11 +168,12 @@ class AuthController extends Controller
                 'alamat' => $request->alamat,
                 'foto_ktp' => $filenameKtp,
                 'foto_selfie' => $filenameSelfie,
+                'status_verifikasi' => 'pending', // Set status ke pending setelah lengkapi profil
             ]);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Registrasi berhasil, menunggu verifikasi admin',
+                'message' => 'Profil berhasil dilengkapi, menunggu verifikasi admin',
                 'data' => [
                     'user' => $user->fresh()
                 ]
@@ -190,7 +208,7 @@ class AuthController extends Controller
         }
 
         try {
-            $updateData['status_verifikasi']='pending';
+            $updateData['status_verifikasi'] = 'pending';
 
             if ($request->has('name')) {
                 $updateData['name'] = $request->name;
