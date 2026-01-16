@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\User;
+use App\Providers\WhatsAppGateway;
 use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
@@ -119,6 +121,35 @@ class BookingController extends Controller
             'status_pembayaran' => 'pending',
             'status_booking' => 'pending',
         ]);
+
+        // Send WhatsApp Notification to Admin
+        try {
+            $admin = User::where('role', 'admin')->whereNotNull('nohp')->first();
+            if ($admin) {
+                $wa = new WhatsAppGateway();
+                $customerName = $request->user()->name;
+                $mobilName = $mobil->nama_mobil;
+                $tglMulai = $tanggalMulai->format('d/m/Y');
+                $tglSelesai = $tanggalSelesai->format('d/m/Y');
+                $totalFormatted = 'Rp' . number_format($totalHarga, 0, ',', '.');
+
+                $message = "📢 *Booking Baru!*\n\n"
+                    . "Kode: *{$booking->kode_booking}*\n"
+                    . "Customer: *{$customerName}*\n"
+                    . "Mobil: *{$mobilName}*\n"
+                    . "Durasi: *{$durasiHari} Hari*\n"
+                    . "Jadwal: *{$tglMulai}* s/d *{$tglSelesai}*\n"
+                    . "Total: *{$totalFormatted}*\n\n"
+                    . "Silakan cek dashboard admin untuk verifikasi pembayaran.";
+
+                $wa->sendText($admin->nohp, $message);
+                Log::info("WhatsApp booking notification sent to admin: {$admin->nohp}");
+            } else {
+                Log::warning("WhatsApp notification skipped: No admin with phone number found.");
+            }
+        } catch (\Exception $e) {
+            Log::error("Failed to send WhatsApp booking notification: " . $e->getMessage());
+        }
 
         return response()->json([
             'success' => true,
