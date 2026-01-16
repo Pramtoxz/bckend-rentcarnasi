@@ -164,3 +164,23 @@ class FCMService
         return $this->sendNotification($user->fcm_token, $title, $message, $data);
     }
 }
+
+    public function sendBroadcastNotification($user, $title, $message, $broadcastData = [])
+    {
+        if (!$user->fcm_token) {
+            Log::warning('FCM: User has no FCM token for broadcast', ['user_id' => $user->id]);
+            return false;
+        }
+
+        $data = array_merge([
+            'type' => 'broadcast',
+        ], $broadcastData);
+
+        Log::info('FCM: Sending broadcast notification', [
+            'user_id' => $user->id,
+            'title' => $title,
+            'broadcast_id' => $broadcastData['broadcast_id'] ?? null
+        ]);
+
+        return $this->sendNotification($user->fcm_token, $title, $message, $data);
+    }
