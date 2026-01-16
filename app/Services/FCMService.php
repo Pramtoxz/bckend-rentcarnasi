@@ -13,53 +13,83 @@ class FCMService
     public function __construct()
     {
         $this->client = new Client();
-       $this->client->setAuthConfig(base_path('fcm.json'));    
-    $this->client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-}
+        $this->client->setAuthConfig(base_path('fcm.json'));
+        $this->client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+    }
 
     public function sendNotification($token, $title, $body, $data = [])
     {
-        $this->client->fetchAccessTokenWithAssertion();
-        $accessToken = $this->client->getAccessToken();
-        
-        $tokenValue = $accessToken['access_token'];
-        $projectId = env('FCM_PROJECT_ID');
+        try {
+            $this->client->fetchAccessTokenWithAssertion();
+            $accessToken = $this->client->getAccessToken();
+            
+            if (!$accessToken || !isset($accessToken['access_token'])) {
+                Log::error('FCM: Failed to get access token', ['accessToken' => $accessToken]);
+                return false;
+            }
+            
+            $tokenValue = $accessToken['access_token'];
+            $projectId = env('FCM_PROJECT_ID');
 
-        $payload = [
-            'message' => [
-                'token' => $token,
-                'notification' => [
-                    'title' => $title,
-                    'body'  => $body,
+            if (!$projectId) {
+                Log::error('FCM: FCM_PROJECT_ID not set in .env');
+                return false;
+            }
+
+            $payload = [
+                'message' => [
+                    'token' => $token,
+                    'notification' => [
+                        'title' => $title,
+                        'body'  => $body,
+                    ],
+                    'data' => $data,
+                    'android' => [
+                        'priority' => 'high',
+                    ],
                 ],
-                'data' => $data,
-                'android' => [
-                    'priority' => 'high',
-                ],
-            ],
-        ];
+            ];
 
-        $response = Http::withToken($tokenValue)
-            ->withHeaders(['Content-Type' => 'application/json'])
-            ->post("https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send", $payload);
+            Log::info('FCM: Sending notification', [
+                'token' => substr($token, 0, 20) . '...',
+                'title' => $title,
+                'projectId' => $projectId
+            ]);
 
-        if ($response->failed()) {
-            Log::error($response->body());
+            $response = Http::withToken($tokenValue)
+                ->withHeaders(['Content-Type' => 'application/json'])
+                ->post("https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send", $payload);
+
+            if ($response->failed()) {
+                Log::error('FCM: Failed to send notification', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                    'token' => substr($token, 0, 20) . '...'
+                ]);
+                return false;
+            }
+
+            Log::info('FCM: Notification sent successfully', ['response' => $response->json()]);
+            return $response->json();
+        } catch (\Exception $e) {
+            Log::error('FCM: Exception occurred', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return false;
         }
-
-        return $response->json();
     }
 
     public function sendVerificationNotification($user, $status, $catatan = null)
     {
         if (!$user->fcm_token) {
+            Log::warning('FCM: User has no FCM token', ['user_id' => $user->id]);
             return false;
         }
 
         $title = $status === 'verified' 
-            ? '✅ Verifikasi Berhasil' 
-            : '❌ Verifikasi Ditolak';
+            ? 'Verifikasi Berhasil' 
+            : 'Verifikasi Ditolak';
         
         $body = $status === 'verified'
             ? 'Selamat! Akun Anda telah diverifikasi. Anda sekarang dapat melakukan booking mobil.'
@@ -70,6 +100,11 @@ class FCMService
             'status' => $status,
             'catatan' => $catatan ?? '',
         ];
+
+        Log::info('FCM: Sending verification notification', [
+            'user_id' => $user->id,
+            'status' => $status
+        ]);
 
         return $this->sendNotification($user->fcm_token, $title, $body, $data);
     }
@@ -83,8 +118,8 @@ class FCMService
         }
 
         $title = $status === 'verified' 
-            ? '✅ Pembayaran Diverifikasi' 
-            : '❌ Pembayaran Ditolak';
+            ? 'Pembayaran Diverifikasi' 
+            : 'Pembayaran Ditolak';
         
         $body = $status === 'verified'
             ? "Pembayaran booking {$booking->kode_booking} telah diverifikasi. Silakan ambil mobil sesuai jadwal."
@@ -110,11 +145,11 @@ class FCMService
         }
 
         $titles = [
-            'pending' => '⏳ Booking Menunggu',
-            'verified' => '✅ Booking Dikonfirmasi',
-            'checked_in' => '🚗 Mobil Siap Diambil',
-            'completed' => '✔️ Booking Selesai',
-            'cancelled' => '❌ Booking Dibatalkan',
+            'pending' => 'Booking Menunggu',
+            'verified' => 'Booking Dikonfirmasi',
+            'checked_in' => 'Mobil Siap Diambil',
+            'completed' => 'Booking Selesai',
+            'cancelled' => 'Booking Dibatalkan',
         ];
 
         $title = $titles[$status] ?? 'Update Booking';

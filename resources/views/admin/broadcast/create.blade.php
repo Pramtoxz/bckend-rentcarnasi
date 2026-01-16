@@ -41,9 +41,9 @@
                                 <label class="form-label required">Tipe</label>
                                 <select name="tipe" class="form-select @error('tipe') is-invalid @enderror" required>
                                     <option value="">Pilih Tipe</option>
-                                    <option value="promo" {{ old('tipe') == 'promo' ? 'selected' : '' }}>🎉 Promo</option>
-                                    <option value="info" {{ old('tipe') == 'info' ? 'selected' : '' }}>ℹ️ Info</option>
-                                    <option value="pengumuman" {{ old('tipe') == 'pengumuman' ? 'selected' : '' }}>📢 Pengumuman</option>
+                                    <option value="promo" {{ old('tipe') == 'promo' ? 'selected' : '' }}>Promo</option>
+                                    <option value="info" {{ old('tipe') == 'info' ? 'selected' : '' }}>Info</option>
+                                    <option value="pengumuman" {{ old('tipe') == 'pengumuman' ? 'selected' : '' }}>Pengumuman</option>
                                 </select>
                                 @error('tipe')
                                     <div class="invalid-feedback">{{ $message }}</div>
