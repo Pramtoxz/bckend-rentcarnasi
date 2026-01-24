@@ -29,9 +29,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         WA::create([
-            'wa_gateway_url' => 'https://wa-gateway.myserverku.web.id',
-            'wa_gateway_secret' => '1492f8a9cd3b2255a10d09d32c0d8526a3a5a1f57f9a3633c9b5b58ae20c6804',
-            'wa_session_name' => 'attaya',
+            'wa_gateway_url' => 'https://api-wa.albiruni.sch.id',
+            'wa_gateway_secret' => '718272395fd1bb4f72dc14dd8a5c731c79de7d25284a2faf5749cfc3822284d5',
+            'wa_session_name' => 'hello',
             'wa_group_id' => '120363421970612390@g.us',
         ]);
     }
